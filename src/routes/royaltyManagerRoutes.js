@@ -25,7 +25,7 @@ router.post('/viewing', (req, res, next) => {
       return res.status(404).send({ error: 'The episode does not exist' });
     }
 
-    royalties.incrementStudioViews(episode.rightsowner);
+    royalties.incrementStudioViews(viewedEpisode.rightsowner);
     return res.status(202).end();
   } catch (err) {
     return next(err);

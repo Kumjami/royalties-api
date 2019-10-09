@@ -7,7 +7,7 @@ function incrementStudioViews(rightsOwner) {
 }
 
 function resetViewCounters() {
-  studios.forEach((studio) => { counter[studio] = 0; });
+  studios.forEach((studio) => { counter[studio.id] = 0; });
 }
 
 function getViews() {
