@@ -68,3 +68,9 @@ To run the linter in isolation run the following command:
 npm run lint
 ```
 Some other best practices from [node best practices](https://github.com/goldbergyoni/nodebestpractices) has been applied. 
+
+# Running Application
+
+A Heroku environment has been set in order to have a sandbox environment where to easily check the application:
+
+> https://kumjami-royalties-api.herokuapp.com
