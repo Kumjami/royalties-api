@@ -1,0 +1,43 @@
+{
+  "name": "royalties-api",
+  "version": "1.0.0",
+  "description": "API to calculate royalties",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "jest --silent"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kumjami/royalties-api.git"
+  },
+  "keywords": [
+    "royalties"
+  ],
+  "author": "Marcelo Gomez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kumjami/royalties-api/issues"
+  },
+  "homepage": "https://github.com/Kumjami/royalties-api#readme",
+  "dependencies": {
+    "@hapi/joi": "^16.1.7",
+    "body-parser": "^1.19.0",
+    "bunyan": "^1.8.12",
+    "decimal.js": "^10.2.0",
+    "env2": "^2.2.2",
+    "express": "^4.17.1",
+    "joi": "^14.3.1",
+    "lodash.find": "^4.6.0",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-security": "^1.4.0",
+    "jest": "^24.9.0",
+    "supertest": "^4.0.2"
+  }
+}
