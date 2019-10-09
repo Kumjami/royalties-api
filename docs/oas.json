@@ -1,0 +1,420 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Royalties API",
+    "description": "Simple API to calculate royalties based on views",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/royaltymanager/viewing": {
+      "post": {
+        "summary": "Register new viewing",
+        "description": "Register a new episode view to the proper royalty owner",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "correlation-id",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Id that will be attached to all the logs related to the incoming request"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "episode",
+                  "customer"
+                ],
+                "properties": {
+                  "episode": {
+                    "type": "string",
+                    "description": "Episode id. It must exist in the system"
+                  },
+                  "customer": {
+                    "type": "string",
+                  }
+                },
+                "example": {
+                  "episode": "c1b1eb7020b345189d05000dbb05029d",
+                  "customer": "Batman"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "View processed correctly",
+            "headers": {
+              "correlation-id": {
+                "schema": {
+                  "type": "string"
+                },
+                "required": true,
+                "description": "Echo of the correlation id specified in the request, if no correlation id was specified, a UUID will be generated and returned back"
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error, either customer or episode are missing",
+            "headers": {
+              "correlation-id": {
+                "schema": {
+                  "type": "string"
+                },
+                "required": true,
+                "description": "Echo of the correlation id specified in the request, if no correlation id was specified, a UUID will be generated and returned back"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "episode is required"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Episode not found within the system",
+            "headers": {
+              "correlation-id": {
+                "schema": {
+                  "type": "string"
+                },
+                "required": true,
+                "description": "Echo of the correlation id specified in the request, if no correlation id was specified, a UUID will be generated and returned back"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "The episode does not exist"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "headers": {
+              "correlation-id": {
+                "schema": {
+                  "type": "string"
+                },
+                "required": true,
+                "description": "Echo of the correlation id specified in the request, if no correlation id was specified, a UUID will be generated and returned back"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/royaltymanager/reset": {
+      "post": {
+        "summary": "Reset the system",
+        "description": "Set the views and royalty counters to 0 for all the studios",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "correlation-id",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Id that will be attached to all the logs related to the incoming request"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Reset processed correctly",
+            "headers": {
+              "correlation-id": {
+                "schema": {
+                  "type": "string"
+                },
+                "required": true,
+                "description": "Echo of the correlation id specified in the request, if no correlation id was specified, a UUID will be generated and returned back"
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "headers": {
+              "correlation-id": {
+                "schema": {
+                  "type": "string"
+                },
+                "required": true,
+                "description": "Echo of the correlation id specified in the request, if no correlation id was specified, a UUID will be generated and returned back"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/royaltymanager/payments": {
+      "get": {
+        "summary": "List royalties",
+        "description": "List the royalties for every studio",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "correlation-id",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Id that will be attached to all the logs related to the incoming request"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of studios with their royalties",
+            "headers": {
+              "correlation-id": {
+                "schema": {
+                  "type": "string"
+                },
+                "required": true,
+                "description": "Echo of the correlation id specified in the request, if no correlation id was specified, a UUID will be generated and returned back"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "rightsownerId",
+                      "rightsowner",
+                      "royalty",
+                      "viewings"
+                    ],
+                    "properties": {
+                      "rightsownerId": {
+                        "type": "string"
+                      },
+                      "rightsowner": {
+                        "type": "string"
+                      },
+                      "royalty": {
+                        "type": "number",
+                        "format": "float"
+                      },
+                      "viewings": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                      "rightsownerId": "665115721c6f44e49be3bd3e26606026",
+                      "rightsowner": "HBO",
+                      "royalty": 0,
+                      "viewings": 0
+                  },
+                  {
+                      "rightsownerId": "8d713a092ebf4844840cb90d0c4a2030",
+                      "rightsowner": "Sky UK",
+                      "royalty": 0,
+                      "viewings": 0
+                  },
+                  {
+                      "rightsownerId": "75aee18236484501b209aa36f95c7e0f",
+                      "rightsowner": "Showtime",
+                      "royalty": 0,
+                      "viewings": 0
+                  },
+                  {
+                      "rightsownerId": "49924ec6ec6c4efca4aa8b0779c89406",
+                      "rightsowner": "Fox",
+                      "royalty": 0,
+                      "viewings": 0
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "headers": {
+              "correlation-id": {
+                "schema": {
+                  "type": "string"
+                },
+                "required": true,
+                "description": "Echo of the correlation id specified in the request, if no correlation id was specified, a UUID will be generated and returned back"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/royaltymanager/payments/{studioId}": {
+      "get": {
+        "summary": "View studio royalty",
+        "description": "Get the royalty information about the specified studio",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "studioId",
+            "required": true,
+            "description": "Id of the studio to retrieve information from",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "correlation-id",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Id that will be attached to all the logs related to the incoming request"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Royalty information from the specified studio",
+            "headers": {
+              "correlation-id": {
+                "schema": {
+                  "type": "string"
+                },
+                "required": true,
+                "description": "Echo of the correlation id specified in the request, if no correlation id was specified, a UUID will be generated and returned back"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "rightsowner",
+                    "viewings",
+                    "royalty"
+                  ],
+                  "properties": {
+                    "rightsowner": {
+                      "type": "string"
+                    },
+                    "royalty": {
+                      "type": "number",
+                      "format": "float"
+                    },
+                    "viewings": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "example": {
+                  "rightsowner": "Fox",
+                  "royalty": 17.34,
+                  "viewings": 1
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Studio not found within the system",
+            "headers": {
+              "correlation-id": {
+                "schema": {
+                  "type": "string"
+                },
+                "required": true,
+                "description": "Echo of the correlation id specified in the request, if no correlation id was specified, a UUID will be generated and returned back"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "The studio does not exist"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Unexpected error",
+            "headers": {
+              "correlation-id": {
+                "schema": {
+                  "type": "string"
+                },
+                "required": true,
+                "description": "Echo of the correlation id specified in the request, if no correlation id was specified, a UUID will be generated and returned back"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Message describing the error"
+          }
+        }
+      }
+    }
+  }
+}

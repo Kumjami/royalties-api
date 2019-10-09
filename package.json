@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
-    "test": "jest --silent"
+    "test": "jest --silent",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -39,5 +40,8 @@
     "eslint-plugin-security": "^1.4.0",
     "jest": "^24.9.0",
     "supertest": "^4.0.2"
+  },
+  "engines": {
+    "node": ">=8"
   }
 }

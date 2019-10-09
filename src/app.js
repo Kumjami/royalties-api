@@ -24,4 +24,6 @@ app.use((err, req, res, next) => {
   next();
 });
 
+app.use(express.static('docs'));
+
 module.exports = app;
