@@ -1,0 +1,19 @@
+version: '3'
+services:
+  api:
+    build: .
+    ports:
+    - "3000:3000"
+    links:
+    - redis
+    depends_on:
+    - redis
+    environment:
+    - REDIS_MODULE=ioredis
+    - REDIS_URL=redis://redis:6379
+    - PORT=3000
+    - LOG_LEVEL=info
+  redis:
+    image: redis
+    expose:
+    - "6379"

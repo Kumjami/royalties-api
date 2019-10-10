@@ -29,6 +29,8 @@
     "decimal.js": "^10.2.0",
     "env2": "^2.2.2",
     "express": "^4.17.1",
+    "ioredis": "^4.14.1",
+    "ioredis-mock": "^4.18.0",
     "joi": "^14.3.1",
     "lodash.find": "^4.6.0",
     "uuid": "^3.3.3"

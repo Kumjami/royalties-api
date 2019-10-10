@@ -51,6 +51,14 @@ By default, if no other [configuration](#configuration) is specified the API wil
 docker run -d -p 3000:3000 royalties-api 
 ```
 
+### Using docker compose to launch the API and Redis to keep the state.
+
+A docker-compose file is provided in order to run the application by using Docker for the API and for the Redis instance.
+To start the combo just run:
+```sh
+docker-compose up
+```
+
 ## Configuration
 
 There are some parameters which are configurable through environment variables. 
@@ -58,7 +66,9 @@ There are some parameters which are configurable through environment variables.
 | Variable | Default value| Description|
 |:-|:-:|:-|
 |PORT|3000| HTTP port on which the application would be accepting requests|
-|LOG_LEVEL| info | Logs will be displayed from that level onwards| 
+|LOG_LEVEL| info | Logs will be displayed from that level onwards|
+|REDIS_URL| - | URL of the Redis instance to use as a external state database. It is mandatory if `ioredis` is specified as REDIS_MODULE|
+|REDIS_MODULE| ioredis-mock | For the ease of development and testing, redis module implementation can be specified. Only `ioredis` or `ioredis-mock` are valid, if a non valid module is specified `ioredis-mock` will be used. By using `ioredis-mock` a real accesible Redis instance is not required, the store will live in memory|
 
 ## Code style
 
@@ -74,3 +84,6 @@ Some other best practices from [node best practices](https://github.com/goldberg
 A Heroku environment has been set in order to have a sandbox environment where to easily check the application:
 
 > https://kumjami-royalties-api.herokuapp.com
+
+This environment gets a new version deployed whenever a push/merge to master is done.
+It relays on a Redis instance in order to keep the state between deployments. 

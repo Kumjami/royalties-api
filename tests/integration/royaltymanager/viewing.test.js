@@ -35,7 +35,7 @@ describe('POST /royaltymanager/viewing', () => {
     expect(response.status).toEqual(400);
     expect(response.body).toEqual({ error: '"customer" is required' });
   });
-  it('should respond with a 404 if episode does not exist', async () => {
+  it('should respond with a 400 if episode does not exist', async () => {
     const response = await request(app)
       .post('/royaltymanager/viewing')
       .send({
@@ -43,7 +43,7 @@ describe('POST /royaltymanager/viewing', () => {
         customer: 'customerID',
       });
 
-    expect(response.status).toEqual(404);
+    expect(response.status).toEqual(400);
     expect(response.body).toEqual({ error: 'The episode does not exist' });
   });
 });
