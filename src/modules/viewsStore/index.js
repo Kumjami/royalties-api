@@ -1,6 +1,8 @@
-// Load Redis module implementation dynamically. That's not the best approach, but for the current
-// scenario it just works. That it is not needed to actually install a redis server.
-// It will always default to 'ioredis-mock' unless 'ioredis' is specified.
+/**
+ * Load Redis module implementation dynamically. That's not the best approach, but for the current
+ * scenario it just works. That it is not needed to actually install a redis server.
+ * It will always default to 'ioredis-mock' unless 'ioredis' is specified.
+ */
 const { REDIS_MODULE } = process.env;
 const redisPackage = REDIS_MODULE === 'ioredis' ? 'ioredis' : 'ioredis-mock';
 // eslint-disable-next-line import/no-dynamic-require

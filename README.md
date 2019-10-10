@@ -77,7 +77,7 @@ To run the linter in isolation run the following command:
 ```sh
 npm run lint
 ```
-Some other best practices from [node best practices](https://github.com/goldbergyoni/nodebestpractices) has been applied. 
+Some other best practices from [node best practices](https://github.com/goldbergyoni/nodebestpractices) have been applied. 
 
 # Running Application
 
@@ -85,5 +85,10 @@ A Heroku environment has been set in order to have a sandbox environment where t
 
 > https://kumjami-royalties-api.herokuapp.com
 
+It relays on a Redis instance in order to keep the state between deployments.
+
 This environment gets a new version deployed whenever a push/merge to master is done.
-It relays on a Redis instance in order to keep the state between deployments. 
+To handle CI/CD process, [github actions](https://github.com/Kumjami/royalties-api/actions) have been set. Only after the workflow is green, the application gets deployed.
+Contributors have the `environment` tab where the status of the deployment can be tracked. 
+![imagen](https://user-images.githubusercontent.com/8338963/66550812-7a15d500-eb46-11e9-87d8-6ab1cef525d3.png)
+![imagen](https://user-images.githubusercontent.com/8338963/66550889-9ca7ee00-eb46-11e9-900d-1e9af064d0b3.png)
